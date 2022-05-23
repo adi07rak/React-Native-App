@@ -15,6 +15,12 @@ export default function App() {
     ]);
   };
 
+  function deleteGoalhandler(id) {
+    setCourseGoals(currentCourseGoals => {
+      return currentCourseGoals.filter((goal) => goal.uid !== id);
+    });
+  }
+
   return (
     <View style={styles.screen}>
       <GoalInput onAddGoal={addGoalHandler} />
@@ -31,7 +37,8 @@ export default function App() {
         keyExtractor={(item, index) => item.uid}
         data={courseGoals}
         renderItem={ item => (
-          <GoalItem text={item.item.value}/>
+          <GoalItem id={item.item.uid}
+            text={item.item.value} onDeleteItem={deleteGoalhandler}/>
         )}
       />
     {/* [REASON:: because flatlist render only visible list and render further on scroll; while ScrollView don't] 
