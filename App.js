@@ -7,12 +7,22 @@ import GoalInput from "./components/GoalInput";
 
 export default function App() {
   
+  const [modalIsVisible, setModalIsVisible] = useState(false);
   const [courseGoals, setCourseGoals] = useState([]);
+
+  const startAddGoalHandler = () => {
+    setModalIsVisible(true);
+  };
+
+  const endAddGoalHandler = () => {
+    setModalIsVisible(false);
+  };
 
   const addGoalHandler = (enteredGoal) => {
     setCourseGoals([...courseGoals, 
       {uid: Math.random().toString(), value: enteredGoal}
     ]);
+    setModalIsVisible(false);
   };
 
   function deleteGoalhandler(id) {
@@ -23,7 +33,8 @@ export default function App() {
 
   return (
     <View style={styles.screen}>
-      <GoalInput onAddGoal={addGoalHandler} />
+      <Button title="Add New Goal"color="#5e0acc" onPress={startAddGoalHandler}></Button>
+      <GoalInput onAddGoal={addGoalHandler} visible={modalIsVisible} onCancel={endAddGoalHandler}/>
       {/* <View style={styles.headers}>
         <TextInput
           placeholder="Course Goal"
