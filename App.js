@@ -7,17 +7,34 @@ import GoalInput from "./components/GoalInput";
 
 export default function App() {
   
+  const [modalIsVisible, setModalIsVisible] = useState(false);
   const [courseGoals, setCourseGoals] = useState([]);
+
+  const startAddGoalHandler = () => {
+    setModalIsVisible(true);
+  };
+
+  const endAddGoalHandler = () => {
+    setModalIsVisible(false);
+  };
 
   const addGoalHandler = (enteredGoal) => {
     setCourseGoals([...courseGoals, 
       {uid: Math.random().toString(), value: enteredGoal}
     ]);
+    setModalIsVisible(false);
   };
+
+  function deleteGoalhandler(id) {
+    setCourseGoals(currentCourseGoals => {
+      return currentCourseGoals.filter((goal) => goal.uid !== id);
+    });
+  }
 
   return (
     <View style={styles.screen}>
-      <GoalInput onAddGoal={addGoalHandler} />
+      <Button title="Add New Goal"color="#5e0acc" onPress={startAddGoalHandler}></Button>
+      <GoalInput onAddGoal={addGoalHandler} visible={modalIsVisible} onCancel={endAddGoalHandler}/>
       {/* <View style={styles.headers}>
         <TextInput
           placeholder="Course Goal"
@@ -31,7 +48,8 @@ export default function App() {
         keyExtractor={(item, index) => item.uid}
         data={courseGoals}
         renderItem={ item => (
-          <GoalItem text={item.item.value}/>
+          <GoalItem id={item.item.uid}
+            text={item.item.value} onDeleteItem={deleteGoalhandler}/>
         )}
       />
     {/* [REASON:: because flatlist render only visible list and render further on scroll; while ScrollView don't] 
