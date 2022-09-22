@@ -32,40 +32,48 @@ export default function App() {
   }
 
   return (
-    <View style={styles.screen}>
-      <Button title="Add New Goal"color="#5e0acc" onPress={startAddGoalHandler}></Button>
-      <GoalInput onAddGoal={addGoalHandler} visible={modalIsVisible} onCancel={endAddGoalHandler}/>
-      {/* <View style={styles.headers}>
-        <TextInput
-          placeholder="Course Goal"
-          style={styles.input_container}
-          onChangeText={goalInputHandler}
-          value={enteredGoal}
+    <>
+      <StatusBar style="light"/>
+      <View style={styles.appContainer}>
+        <Button title="Add New Goal"color="#a065ec" onPress={startAddGoalHandler}></Button>
+        <GoalInput onAddGoal={addGoalHandler} visible={modalIsVisible} onCancel={endAddGoalHandler}/>
+        {/* <View style={styles.headers}>
+          <TextInput
+            placeholder="Course Goal"
+            style={styles.input_container}
+            onChangeText={goalInputHandler}
+            value={enteredGoal}
+          />
+          <Button title="ADD" onPress={addGoalHandler} />
+        </View> */}
+        <FlatList
+          keyExtractor={(item, index) => item.uid}
+          data={courseGoals}
+          renderItem={ item => (
+            <GoalItem id={item.item.uid}
+              text={item.item.value} onDeleteItem={deleteGoalhandler}/>
+          )}
         />
-        <Button title="ADD" onPress={addGoalHandler} />
-      </View> */}
-      <FlatList
-        keyExtractor={(item, index) => item.uid}
-        data={courseGoals}
-        renderItem={ item => (
-          <GoalItem id={item.item.uid}
-            text={item.item.value} onDeleteItem={deleteGoalhandler}/>
-        )}
-      />
-    {/* [REASON:: because flatlist render only visible list and render further on scroll; while ScrollView don't] 
-      <ScrollView>
-        {courseGoals.map((goal, i) => (
-          <View style={styles.listItem} key={goal + i}>
-            <Text>{goal}</Text>
-          </View>
-        ))}
-      </ScrollView> */}
-    </View>
+      {/* [REASON:: because flatlist render only visible list and render further on scroll; while ScrollView don't] 
+        <ScrollView>
+          {courseGoals.map((goal, i) => (
+            <View style={styles.listItem} key={goal + i}>
+              <Text>{goal}</Text>
+            </View>
+          ))}
+        </ScrollView> */}
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
     padding: 50,
+  },
+  appContainer: {
+    flex:1,
+    paddingTop: 50,
+    paddingHorizontal: 16,
   },
 });
